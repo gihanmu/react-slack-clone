@@ -103,10 +103,9 @@ class Register extends React.Component {
 
                            </Message>
                        : ''}
-                        
 
-                    
-                    
+
+                       <Message>Already a User ? <Link to="/login">Login</Link></Message>         
 
                    
 
