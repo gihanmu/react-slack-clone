@@ -10,7 +10,8 @@ class Register extends React.Component {
         email : "",
         password : "",
         passwordConfirmation : "",
-        errors : []
+        errors : [],
+        loading : false
     }
 
     handleChange = event => {
@@ -23,7 +24,7 @@ class Register extends React.Component {
     }
 
     isPasswordValid = ({password, passwordConfirmation}) => {
-        if(!password.length < 6 && !passwordConfirmation.length < 6){
+        if(password.length < 6 && passwordConfirmation.length < 6){
             return false;
         }else if(password !== passwordConfirmation){
             return false;
@@ -52,23 +53,27 @@ class Register extends React.Component {
     }
 
     handleSubmit = event => {
-        if(this.isFormValid()){
-            event.preventDefault();
-            
+        event.preventDefault();
+        this.setState({errors : []});        
+        if(this.isFormValid()){           
+            this.setState({errors : []});
+            this.setState({loading : true});
             firebase
             .auth()
             .createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then(createdUser => {
                 console.log(createdUser);
+                this.setState({loading : false});
             })
             .catch(error => {
-                console.error(error);
+                console.error(error);               
+                this.setState({errors : this.state.errors.concat(error.message), loading : false});
             })
         }
     }
 
     render(){
-        const {username, email, password, passwordConfirmation} = this.state;
+        const {username, email, password, passwordConfirmation, loading} = this.state;
         return (
            <Grid textAlign="center" verticalAlign="middle" className="app">
                 <Grid.Column style={{maxWidth : 450}}>
@@ -87,7 +92,7 @@ class Register extends React.Component {
                         
                             <Form.Input fluid name="passwordConfirmation" icon="repeat"  iconPosition="left" placeholder="Confirm Password" onChange={this.handleChange} type="password" value={passwordConfirmation}/>
                         
-                            <Button color="orange" fluid size="large">Submit</Button>
+                            <Button  disabled={loading} className={loading ? 'loading' : ''} color="orange" fluid size="large">Submit</Button>
                         </Segment>
 
 
