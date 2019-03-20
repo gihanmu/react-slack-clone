@@ -73,7 +73,7 @@ class Register extends React.Component {
     }
 
     render(){
-        const {username, email, password, passwordConfirmation, loading} = this.state;
+        const {username, email, password, passwordConfirmation, loading, errors} = this.state;
         return (
            <Grid textAlign="center" verticalAlign="middle" className="app">
                 <Grid.Column style={{maxWidth : 450}}>
@@ -84,13 +84,13 @@ class Register extends React.Component {
 
                     <Form size="large" onSubmit={this.handleSubmit}>
                         <Segment stacked>
-                            <Form.Input fluid name="username" icon="user"  iconPosition="left" placeholder="Username" onChange={this.handleChange} type="text" value={username}/>
+                            <Form.Input fluid name="username" icon="user"  iconPosition="left" placeholder="Username" onChange={this.handleChange} type="text" value={username} className={errors.some(error => error.toLowerCase().includes('username')) ? 'error' : ''}/>
 
-                            <Form.Input fluid name="email" icon="mail"  iconPosition="left" placeholder="Email Address" onChange={this.handleChange} type="text" value={email}/>
+                            <Form.Input fluid name="email" icon="mail"  iconPosition="left" placeholder="Email Address" onChange={this.handleChange} type="text" value={email} className={errors.some(error => error.toLowerCase().includes('email')) ? 'error' : ''}/>
                         
-                            <Form.Input fluid name="password" icon="lock"  iconPosition="left" placeholder="Password" onChange={this.handleChange} type="password" value={password}/>
+                            <Form.Input fluid name="password" icon="lock"  iconPosition="left" placeholder="Password" onChange={this.handleChange} type="password" value={password} className={errors.some(error => error.toLowerCase().includes('password')) ? 'error' : ''}/>
                         
-                            <Form.Input fluid name="passwordConfirmation" icon="repeat"  iconPosition="left" placeholder="Confirm Password" onChange={this.handleChange} type="password" value={passwordConfirmation}/>
+                            <Form.Input fluid name="passwordConfirmation" icon="repeat"  iconPosition="left" placeholder="Confirm Password" onChange={this.handleChange} type="password" value={passwordConfirmation} className={errors.some(error => error.toLowerCase().includes('passwordConfirmation')) ? 'error' : ''}/>
                         
                             <Button  disabled={loading} className={loading ? 'loading' : ''} color="orange" fluid size="large">Submit</Button>
                         </Segment>
